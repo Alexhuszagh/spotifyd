@@ -20,6 +20,10 @@ __To read about how to install and configure Spotifyd, take a look at our [wiki]
 - [Contributing](#contributing)
 - [Credits](#credits)
 
+# Notice
+
+This is essentially a new version of [JCapucho's](https://github.com/JCapucho) fork for Windows, I take credit for none of the commits. I will be properly be applying his commit history into this fork shortly.
+
 ## Common issues
 
 - Spotifyd will not work without Spotify Premium

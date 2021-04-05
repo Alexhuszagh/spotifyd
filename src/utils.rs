@@ -67,11 +67,18 @@ fn get_shell_ffi() -> Option<String> {
     None
 }
 
+#[cfg(unix)]
 pub(crate) fn get_shell() -> Option<String> {
     let shell = env::var("SHELL").ok().or_else(get_shell_ffi);
     trace!("Found user shell: {:?}", &shell);
 
     shell
+}
+
+#[cfg(target_os = "windows")]
+pub(crate) fn get_shell() -> Option<String> {
+    // Default shell is always cmd.
+    Some("cmd".to_string())
 }
 
 #[cfg(test)]

@@ -10,7 +10,6 @@ version = "0.3.2"
 [dependencies]
 alsa = { version = "0.3", optional = true }
 chrono = "0.4"
-daemonize = "0.4"
 dbus = { version = "0.6", optional = true }
 dbus-tokio = { version = "0.2", optional = true }
 fern = { version = "0.6.0", features = ["syslog-4"] }
@@ -25,7 +24,6 @@ rspotify = "0.8.0"
 serde = { version = "1.0.115", features = ["derive"] }
 sha-1 = "0.9"
 structopt = "0.3.17"
-syslog = "4"
 tokio-core = "0.1"
 tokio-io = "0.1"
 tokio-signal = "0.1"
@@ -34,6 +32,13 @@ xdg = "2.2"
 librespot = { version = "0.1.5", default-features = false, features = ["with-tremor"] }
 toml = "0.5.8"
 color-eyre = "0.5"
+
+[target."cfg(unix)".dependencies]
+daemonize = "0.4"
+syslog = "4"
+
+[target."cfg(target_os = \"windows\")".dependencies]
+directories = "2.0.2"
 
 [target."cfg(target_os = \"macos\")".dependencies]
 whoami = "0.9.0"

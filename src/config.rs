@@ -524,6 +524,7 @@ impl SharedConfigValues {
     }
 }
 
+#[cfg(unix)]
 pub(crate) fn get_config_file() -> Option<PathBuf> {
     let etc_conf = format!("/etc/{}", CONFIG_FILE_NAME);
     let xdg_dirs = xdg::BaseDirectories::with_prefix("spotifyd").ok()?;
@@ -536,6 +537,19 @@ pub(crate) fn get_config_file() -> Option<PathBuf> {
             }
         })
     })
+}
+
+#[cfg(target_os = "windows")]
+pub(crate) fn get_config_file() -> Option<PathBuf> {
+    use std::env;
+    let mut path = PathBuf::new();
+    path.push(env::var("APPDATA").unwrap());
+    path.push(CONFIG_FILE_NAME);
+    if path.exists() {
+        Some(path)
+    } else {
+        None
+    }
 }
 
 fn device_id(name: &str) -> String {
@@ -633,10 +647,14 @@ pub(crate) fn get_internal_config(config: CliConfig) -> SpotifydConfig {
             .expect("Failed to convert PID file path to valid Unicode")
     });
 
+    #[cfg(unix)]
     let shell = utils::get_shell().unwrap_or_else(|| {
         info!("Unable to identify shell. Defaulting to \"sh\".");
         "sh".to_string()
     });
+
+    #[cfg(windows)]
+    let shell = utils::get_shell().unwrap();
 
     let mut username = config.shared_config.username;
     if username.is_none() {
